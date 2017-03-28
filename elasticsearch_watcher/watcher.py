@@ -19,22 +19,22 @@ class WatcherClient(AddonClient):
         return data
 
     @query_params('master_timeout')
-    def put_watch(self, id, body, params=None):
+    def put_watch(self, watch_id, body, params=None):
         """
         Create a watcher.
         `<http://www.elastic.co/guide/en/watcher/current/appendix-api-put-watch.html>`_
 
-        :arg id: Watch ID
+        :arg watch_id: Watch ID
         :arg body: The watch
         :arg master_timeout: Specify timeout for watch write operation
         """
-        for param in (id, body):
+        for param in (watch_id, body):
             if param in SKIP_IN_PATH:
                 raise ValueError("Empty value passed for a required argument.")
         _, data = self.transport.perform_request('PUT',
                                                  _make_path('_watcher',
                                                             'watch',
-                                                            id),
+                                                            watch_id),
                                                  params=params, body=body)
         return data
 
@@ -72,85 +72,85 @@ class WatcherClient(AddonClient):
         return data
 
     @query_params('master_timeout')
-    def ack_watch(self, id, params=None):
+    def ack_watch(self, watch_id, params=None):
         """
         Ack a watch.
         `<http://www.elastic.co/guide/en/watcher/current/appendix-api-ack-watch.html>`_
 
-        :arg id: Watch ID
+        :arg watch_id: Watch ID
         :arg master_timeout: Specify timeout for watch write operation
         """
-        if id in SKIP_IN_PATH:
+        if watch_id in SKIP_IN_PATH:
             raise ValueError(
-                "Empty value passed for a required argument 'id'.")
+                "Empty value passed for a required argument 'watch_id'.")
 
         _, data = self.transport.perform_request('PUT',
                                                  _make_path('_watcher',
                                                             'watch',
-                                                            id,
+                                                            watch_id,
                                                             '_ack'),
                                                  params=params)
         return data
 
     @query_params()
-    def execute_watch(self, id, body=None, params=None):
+    def execute_watch(self, watch_id, body=None, params=None):
         """
         Execute watch manually.
         `<http://www.elastic.co/guide/en/watcher/current/appendix-api-execute-watch.html>`_
 
-        :arg id: Watch ID
+        :arg watch_id: Watch ID
         :arg body: Execution control
         """
-        if id in SKIP_IN_PATH:
+        if watch_id in SKIP_IN_PATH:
             raise ValueError(
-                "Empty value passed for a required argument 'id'.")
+                "Empty value passed for a required argument 'watch_id'.")
 
         _, data = self.transport.perform_request('PUT',
                                                  _make_path('_watcher',
                                                             'watch',
-                                                            id,
+                                                            watch_id,
                                                             '_execute'),
                                                  params=params,
                                                  body=body)
         return data
 
     @query_params()
-    def get_watch(self, id, params=None):
+    def get_watch(self, watch_id, params=None):
         """
         Retrieve watch definition.
         `<http://www.elastic.co/guide/en/watcher/current/appendix-api-get-watch.html>`_
 
-        :arg id: Watch ID
+        :arg watch_id: Watch ID
         """
-        if id in SKIP_IN_PATH:
+        if watch_id in SKIP_IN_PATH:
             raise ValueError(
-                "Empty value passed for a required argument 'id'.")
+                "Empty value passed for a required argument 'watch_id'.")
 
         _, data = self.transport.perform_request('GET',
                                                  _make_path('_watcher',
                                                             'watch',
-                                                            id),
+                                                            watch_id),
                                                  params=params)
         return data
 
     @query_params('force', 'master_timeout')
-    def delete_watch(self, id, params=None):
+    def delete_watch(self, watch_id, params=None):
         """
         Delete a watch.
         `<http://www.elastic.co/guide/en/watcher/current/appendix-api-delete-watch.html>`_
 
-        :arg id: Watch ID
+        :arg watch_id: Watch ID
         :arg force: Specify if this request should be forced and ignore locks
         :arg master_timeout: Specify timeout for watch write operation
         """
-        if id in SKIP_IN_PATH:
+        if watch_id in SKIP_IN_PATH:
             raise ValueError(
-                "Empty value passed for a required argument 'id'.")
+                "Empty value passed for a required argument 'watch_id'.")
 
         _, data = self.transport.perform_request('DELETE',
                                                  _make_path('_watcher',
                                                             'watch',
-                                                            id),
+                                                            watch_id),
                                                  params=params)
 
         return data
