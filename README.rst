@@ -24,7 +24,7 @@ You can use this client alone:
     client = Elasticsearch()
     watcher = WatcherClient(client)
 
-    watcher.get_watch(id=42)
+    watcher.get_watch(watch_id=42)
 
 Or you can add the ``watcher`` namespace to the official client to mimic the
 behaviors of other namespaces:
@@ -33,7 +33,7 @@ behaviors of other namespaces:
 
     WatcherClient.infect_client(client)
 
-    client.watcher.get_watch(id=42)
+    client.watcher.get_watch(watch_id=42)
 
 Complex example
 ---------------
@@ -61,7 +61,7 @@ Complex example
 
     # Register a new watch
     es.watcher.put_watch(
-        id='error_500',
+        watch_id='error_500',
         body={
             # label the watch
             'metadata': {'tags': ['errors']},
@@ -164,7 +164,7 @@ Complex example
         print('%s: %s' % (hit['_id'], hit['_source']['state']))
 
     # delete the watch
-    es.watcher.delete_watch(id='error_500', force=True)
+    es.watcher.delete_watch(watch_id='error_500', force=True)
 
 
 License
