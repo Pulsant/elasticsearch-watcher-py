@@ -10,19 +10,19 @@ class WatcherClient(AddonClient):
     @query_params()
     def info(self, params=None):
         """
-        Get infor about the watcher plugin.
-        `<http://www.elastic.co/guide/en/watcher/current/appendix-api-info.html>`_
+        Get info about the xpack plugin.
+        `<https://www.elastic.co/guide/en/x-pack/current/info-api.html>`_
         """
-        _, data = self.transport.perform_request('GET',
-                                                 '/_watcher/',
-                                                 params=params)
+        data = self.transport.perform_request('GET',
+                                              _make_path('_xpack'),
+                                              params=params)
         return data
 
     @query_params('master_timeout')
     def put_watch(self, watch_id, body, params=None):
         """
         Create a watcher.
-        `<http://www.elastic.co/guide/en/watcher/current/appendix-api-put-watch.html>`_
+        `<https://www.elastic.co/guide/en/x-pack/current/watcher-api-put-watch.html>`_
 
         :arg watch_id: Watch ID
         :arg body: The watch
@@ -31,94 +31,109 @@ class WatcherClient(AddonClient):
         for param in (watch_id, body):
             if param in SKIP_IN_PATH:
                 raise ValueError("Empty value passed for a required argument.")
-        _, data = self.transport.perform_request('PUT',
-                                                 _make_path('_watcher',
-                                                            'watch',
-                                                            watch_id),
-                                                 params=params, body=body)
+
+        data = self.transport.perform_request('PUT',
+                                              _make_path('_xpack',
+                                                         'watcher',
+                                                         'watch',
+                                                         watch_id),
+                                              params=params, body=body)
         return data
 
     @query_params()
     def stats(self, params=None):
         """
         Get stats for the watcher plugin.
-        `<http://www.elastic.co/guide/en/watcher/current/appendix-api-stats.html>`_
+        `<https://www.elastic.co/guide/en/x-pack/current/watcher-api-stats.html>`_
         """
-        _, data = self.transport.perform_request('GET',
-                                                 '/_watcher/stats',
-                                                 params=params)
+
+        data = self.transport.perform_request('GET',
+                                              _make_path('_xpack',
+                                                         'watcher',
+                                                         'stats'),
+                                              params=params)
         return data
 
     @query_params()
     def stop(self, params=None):
         """
         Stop the watcher service.
-        `<http://www.elastic.co/guide/en/watcher/current/appendix-api-service.html>`_
+        `<https://www.elastic.co/guide/en/x-pack/current/watcher-api-stop.html>`_
         """
-        _, data = self.transport.perform_request('PUT',
-                                                 '/_watcher/_stop',
-                                                 params=params)
+
+        data = self.transport.perform_request('PUT',
+                                              _make_path('_xpack',
+                                                         '_watcher',
+                                                         '_stop'),
+                                              params=params)
         return data
 
     @query_params()
     def start(self, params=None):
         """
         Start the watcher service.
-        `<http://www.elastic.co/guide/en/watcher/current/appendix-api-service.html>`_
+        `<https://www.elastic.co/guide/en/x-pack/current/watcher-api-start.html>`_
         """
-        _, data = self.transport.perform_request('PUT',
-                                                 '/_watcher/_start',
-                                                 params=params)
+
+        data = self.transport.perform_request('PUT',
+                                              _make_path('_xpack',
+                                                         'watcher',
+                                                         '_start'),
+                                              params=params)
         return data
 
     @query_params('master_timeout')
     def ack_watch(self, watch_id, params=None):
         """
         Ack a watch.
-        `<http://www.elastic.co/guide/en/watcher/current/appendix-api-ack-watch.html>`_
+        `<https://www.elastic.co/guide/en/x-pack/current/watcher-api-ack-watch.html>`_
 
         :arg watch_id: Watch ID
         :arg master_timeout: Specify timeout for watch write operation
         """
+
         if watch_id in SKIP_IN_PATH:
             raise ValueError(
                 "Empty value passed for a required argument 'watch_id'.")
 
-        _, data = self.transport.perform_request('PUT',
-                                                 _make_path('_watcher',
-                                                            'watch',
-                                                            watch_id,
-                                                            '_ack'),
-                                                 params=params)
+        data = self.transport.perform_request('PUT',
+                                              _make_path('_xpack',
+                                                         'watcher',
+                                                         'watch',
+                                                         watch_id,
+                                                         '_ack'),
+                                              params=params)
         return data
 
     @query_params()
     def execute_watch(self, watch_id, body=None, params=None):
         """
         Execute watch manually.
-        `<http://www.elastic.co/guide/en/watcher/current/appendix-api-execute-watch.html>`_
+        `<https://www.elastic.co/guide/en/x-pack/current/watcher-api-execute-watch.html>`_
 
         :arg watch_id: Watch ID
         :arg body: Execution control
         """
+
         if watch_id in SKIP_IN_PATH:
             raise ValueError(
                 "Empty value passed for a required argument 'watch_id'.")
 
-        _, data = self.transport.perform_request('PUT',
-                                                 _make_path('_watcher',
-                                                            'watch',
-                                                            watch_id,
-                                                            '_execute'),
-                                                 params=params,
-                                                 body=body)
+        data = self.transport.perform_request('POST',
+                                              _make_path('_xpack',
+                                                         'watcher',
+                                                         'watch',
+                                                         watch_id,
+                                                         '_execute'),
+                                              params=params,
+                                              body=body)
         return data
 
     @query_params()
     def get_watch(self, watch_id, params=None):
         """
         Retrieve watch definition.
-        `<http://www.elastic.co/guide/en/watcher/current/appendix-api-get-watch.html>`_
+        `<https://www.elastic.co/guide/en/x-pack/current/watcher-api-get-watch.html>`_
 
         :arg watch_id: Watch ID
         """
@@ -126,18 +141,19 @@ class WatcherClient(AddonClient):
             raise ValueError(
                 "Empty value passed for a required argument 'watch_id'.")
 
-        _, data = self.transport.perform_request('GET',
-                                                 _make_path('_watcher',
-                                                            'watch',
-                                                            watch_id),
-                                                 params=params)
+        data = self.transport.perform_request('GET',
+                                              _make_path('_xpack',
+                                                         'watcher',
+                                                         'watch',
+                                                         watch_id),
+                                              params=params)
         return data
 
     @query_params('force', 'master_timeout')
     def delete_watch(self, watch_id, params=None):
         """
         Delete a watch.
-        `<http://www.elastic.co/guide/en/watcher/current/appendix-api-delete-watch.html>`_
+        `<https://www.elastic.co/guide/en/x-pack/current/watcher-api-delete-watch.html>`_
 
         :arg watch_id: Watch ID
         :arg force: Specify if this request should be forced and ignore locks
@@ -147,11 +163,12 @@ class WatcherClient(AddonClient):
             raise ValueError(
                 "Empty value passed for a required argument 'watch_id'.")
 
-        _, data = self.transport.perform_request('DELETE',
-                                                 _make_path('_watcher',
-                                                            'watch',
-                                                            watch_id),
-                                                 params=params)
+        data = self.transport.perform_request('DELETE',
+                                              _make_path('_xpack',
+                                                         'watcher',
+                                                         'watch',
+                                                         watch_id),
+                                              params=params)
 
         return data
 
@@ -159,10 +176,12 @@ class WatcherClient(AddonClient):
     def restart(self, params=None):
         """
         Restart the watcher service.
-        `<http://www.elastic.co/guide/en/watcher/current/appendix-api-service.html>`_
+        `<https://www.elastic.co/guide/en/x-pack/current/watcher-api-restart.html>`_
         """
 
-        _, data = self.transport.perform_request('PUT',
-                                                 '/_watcher/_restart',
-                                                 params=params)
+        data = self.transport.perform_request('POST',
+                                              _make_path('_xpack',
+                                                         'watcher',
+                                                         '_restart'),
+                                              params=params)
         return data
